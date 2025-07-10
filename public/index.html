@@ -45,8 +45,8 @@
     <label>Choose Plan
       <select name="priceId" required>
         <option value="">Select a plan</option>
-        <option value="price_1Abc...">Monthly - $10</option>
-        <option value="price_1Def...">Yearly - $100</option>
+        <option value="price_1RgYdaQBKtUMd8hmQ0882Y2w">Bionthly - $39</option>
+        <option value="price_1RgYdaQBKtUMd8hmF0atZxZr">Yearly - $210</option>
       </select>
     </label>
 
@@ -64,7 +64,7 @@
       });
       const data = await response.json();
       if (data.id) {
-        const stripe = Stripe("pk_test_YOUR_PUBLIC_KEY_HERE");
+        const stripe = Stripe("pk_test_51RgYY8QBKtUMd8hmBvWGez2tIVXN91jcyf4kyqHEsIdXGM4L4QZoh4YJJdD4Sc2pofFXEWpQJFzSbfbodS5Xel9h00rpPDUt8S");
         stripe.redirectToCheckout({ sessionId: data.id });
       } else {
         alert('Something went wrong: ' + data.error);
