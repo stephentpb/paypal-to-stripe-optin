@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Subscribe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: sans-serif; padding: 2em; max-width: 500px; margin: auto; }
+    label { display: block; margin-top: 1em; }
+    input, select { width: 100%; padding: 0.5em; margin-top: 0.2em; }
+    button { margin-top: 1.5em; padding: 0.7em; background: #6772e5; color: white; border: none; width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>Confirm Your Info to Subscribe</h2>
+  <form id="subscribe-form">
+    <label>Email
+      <input type="email" name="email" required />
+    </label>
+
+    <label>Name
+      <input type="text" name="name" required />
+    </label>
+
+    <label>Address Line 1
+      <input type="text" name="line1" required />
+    </label>
+
+    <label>City
+      <input type="text" name="city" required />
+    </label>
+
+    <label>State
+      <input type="text" name="state" required />
+    </label>
+
+    <label>Postal Code
+      <input type="text" name="postal_code" required />
+    </label>
+
+    <label>Country
+      <input type="text" name="country" value="US" required />
+    </label>
+
+    <label>Choose Plan
+      <select name="priceId" required>
+        <option value="">Select a plan</option>
+        <option value="price_1Abc...">Monthly - $10</option>
+        <option value="price_1Def...">Yearly - $100</option>
+      </select>
+    </label>
+
+    <button type="submit">Subscribe</button>
+  </form>
+
+  <script>
+    document.getElementById('subscribe-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = Object.fromEntries(new FormData(e.target));
+      const response = await fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      if (data.id) {
+        const stripe = Stripe("pk_test_YOUR_PUBLIC_KEY_HERE");
+        stripe.redirectToCheckout({ sessionId: data.id });
+      } else {
+        alert('Something went wrong: ' + data.error);
+      }
+    });
+  </script>
+</body>
+</html>
